@@ -11,7 +11,7 @@ fs.writeFile(
 );
 stdout.write('Write your message, to finish press Ctrl+C or enter "exit"\n');
 stdin.on('data', data => {
-  if (data.toString().includes('exit')) {
+  if (data.toString().replace(/\s/g, '') === 'exit') {
     console.log('Goodbye!!!');
     process.exit(); 
   }
