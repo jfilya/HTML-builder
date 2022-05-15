@@ -1,30 +1,30 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
-fs.mkdir(path.join(__dirname, "project-dist"), { recursive: true }, (err) => {
+fs.mkdir(path.join(__dirname, 'project-dist'), { recursive: true }, (err) => {
   if (err) throw err;
 });
 
 let ind = [];
-fs.readFile(path.join(__dirname, "template.html"), "utf-8", (err, data) => {
+fs.readFile(path.join(__dirname, 'template.html'), 'utf-8', (err, data) => {
   if (err) throw err;
-  ind.push(...data.split("\n"));
+  ind.push(...data.split('\n'));
   for (let i = 0; i < ind.length; i++) {
-    fs.readdir(path.join(__dirname, "components"), (err, data) => {
+    fs.readdir(path.join(__dirname, 'components'), (err, data) => {
       if (err) throw err;
       for (let j = 0; j < data.length; j++) {
-        let sample = path.join(__dirname, "components", data[j]);
+        let sample = path.join(__dirname, 'components', data[j]);
         let sampleInd = path.parse(path.basename(sample)).name;
         if (ind[i].includes(sampleInd)) {
           fs.readFile(
-            path.join(__dirname, "components", path.basename(sample)),
-            "utf-8",
+            path.join(__dirname, 'components', path.basename(sample)),
+            'utf-8',
             (err, data) => {
               if (err) throw err;
               ind[i] = data;
               fs.writeFile(
-                path.join(__dirname, "project-dist", "index.html"),
-                ind.join(""),
+                path.join(__dirname, 'project-dist', 'index.html'),
+                ind.join(''),
                 (err) => {
                   if (err) throw err;
                 }
@@ -38,11 +38,11 @@ fs.readFile(path.join(__dirname, "template.html"), "utf-8", (err, data) => {
 });
 
 let arr = [];
-let styleFile = path.join(__dirname, "styles");
+let styleFile = path.join(__dirname, 'styles');
 fs.readdir(styleFile, (_err, items) => {
   for (let i = 0; i < items.length; i++) {
-    let file = path.join(__dirname, "styles", items[i]);
-    if (path.extname(file) === ".css") {
+    let file = path.join(__dirname, 'styles', items[i]);
+    if (path.extname(file) === '.css') {
       fs.stat(file, (err, stats) => {
         if (err) {
           console.error(err);
@@ -50,14 +50,14 @@ fs.readdir(styleFile, (_err, items) => {
         }
         if (stats.isFile()) {
           fs.readFile(
-            path.join(__dirname, "styles", items[i]),
-            "utf-8",
+            path.join(__dirname, 'styles', items[i]),
+            'utf-8',
             (err, data) => {
               if (err) throw err;
               arr.push(data.toString());
               fs.writeFile(
-                path.join(__dirname, "project-dist", "style.css"),
-                arr.join(""),
+                path.join(__dirname, 'project-dist', 'style.css'),
+                arr.join(''),
                 (err) => {
                   if (err) throw err;
                 }
@@ -71,20 +71,20 @@ fs.readdir(styleFile, (_err, items) => {
 });
 
 fs.mkdir(
-  path.join(__dirname, "project-dist", "assets"),
+  path.join(__dirname, 'project-dist', 'assets'),
   { recursive: true },
   (err) => {
     if (err) throw err;
-    fs.readdir(path.join(__dirname, "assets"), (_err, items) => {
+    fs.readdir(path.join(__dirname, 'assets'), (_err, items) => {
       for (let i = 0; i < items.length; i++) {
         fs.mkdir(
-          path.join(__dirname, "project-dist", "assets", items[i]),
+          path.join(__dirname, 'project-dist', 'assets', items[i]),
           { recursive: true },
           (err) => {
             if (err) throw err;
           },
           fs.readdir(
-            path.join(__dirname, "project-dist", "assets", items[i]),
+            path.join(__dirname, 'project-dist', 'assets', items[i]),
             { recursive: true },
             (_err, copy) => {
               if (copy) {
@@ -92,8 +92,8 @@ fs.mkdir(
                   fs.unlink(
                     path.join(
                       __dirname,
-                      "project-dist",
-                      "assets",
+                      'project-dist',
+                      'assets',
                       items[i],
                       copy[j]
                     ),
@@ -105,14 +105,14 @@ fs.mkdir(
               }
             }
           ),
-          fs.readdir(path.join(__dirname, "assets", items[i]), (_err, copy) => {
+          fs.readdir(path.join(__dirname, 'assets', items[i]), (_err, copy) => {
             for (let j = 0; j < copy.length; j++) {
               fs.copyFile(
-                path.join(__dirname, "assets", items[i], copy[j]),
+                path.join(__dirname, 'assets', items[i], copy[j]),
                 path.join(
                   __dirname,
-                  "project-dist",
-                  "assets",
+                  'project-dist',
+                  'assets',
                   items[i],
                   copy[j]
                 ),
